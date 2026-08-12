@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>House Price Prediction | Smart Real Estate Valuation</title>
+    <meta name="description" content="Predict house prices accurately using machine learning. Enter 12 key property details to get an instant valuation estimate.">
+    <meta name="keywords" content="house price prediction, real estate, property valuation, machine learning">
+    
+    <!--Scans Serif font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Material Icons for clean UI icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon (uses the logo) -->
+    <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+<body>
+
+    <!-- ============================================
+         NAVIGATION BAR
+         Clean top nav with logo, links, and mobile menu
+         ============================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+
+            <!-- Logo and Brand Name -->
+            <a href="#" class="nav-logo" id="nav-logo">
+                <img src="assets/logo.png" alt="House Price Prediction Logo" class="nav-logo-img">
+                <span class="nav-logo-text">PricePredict</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#dashboard" class="nav-link active" data-page="dashboard">
+                    <span class="material-icons-round nav-icon">dashboard</span>
+                    Dashboard
+                </a></li>
+                <li><a href="#prediction" class="nav-link" data-page="prediction">
+                    <span class="material-icons-round nav-icon">analytics</span>
+                    Prediction
+                </a></li>
+                <li><a href="#about" class="nav-link" data-page="about">
+                    <span class="material-icons-round nav-icon">info</span>
+                    About
+                </a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Menu Button -->
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+
+
+    <!-- ============================================
+         PAGE: DASHBOARD (Hero / Landing)
+         Large hero section with the house background image
+         ============================================ -->
+    <section class="page page-active" id="page-dashboard">
+
+        <!-- Hero Section with house background -->
+        <div class="hero">
+            <div class="hero-image-wrapper">
+                <img src="assets/house.png" alt="Luxury modern villas" class="hero-image">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Intelligent House Price Prediction</h1>
+                <p class="hero-subtitle">Harness the power of machine learning to get accurate property valuations. Enter key property details and receive an instant price estimate.</p>
+                <button class="btn btn-primary hero-btn" id="hero-cta-btn" data-navigate="prediction">
+                    <span class="material-icons-round">analytics</span>
+                    Start Prediction
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Stats Cards (static placeholders showing app capabilities) -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-blue">
+                    <span class="material-icons-round">home</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">12</span>
+                    <span class="stat-label">Property Features</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-green">
+                    <span class="material-icons-round">precision_manufacturing</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">ML</span>
+                    <span class="stat-label">Powered Engine</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-purple">
+                    <span class="material-icons-round">speed</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">Fast</span>
+                    <span class="stat-label">Instant Results</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-orange">
+                    <span class="material-icons-round">verified</span>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value">High</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================
+         PAGE: PREDICTION
+         The main prediction form with 12 input fields
+         ============================================ -->
+    <section class="page" id="page-prediction">
+        <div class="page-container">
+
+            <!-- Section Header -->
+            <div class="section-header">
+                <span class="material-icons-round section-header-icon">home_work</span>
+                <h2 class="section-title">Property Details</h2>
+                <p class="section-subtitle">Fill in the 12 property features below to predict the house price.</p>
+            </div>
+
+            <!-- Prediction Form -->
+            <form class="prediction-form" id="prediction-form" autocomplete="off">
+
+                <!-- ===== ROW 1 ===== -->
+                <div class="form-grid">
+
+                    <!-- 1. Overall Quality (Slider) -->
+                    <div class="form-group form-group-slider">
+                        <label class="form-label" for="overallQual">Overall Quality</label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="overallQual" name="OverallQual"
+                                   min="1" max="10" value="5" step="1" class="form-slider">
+                            <span class="slider-value" id="overallQual-value">5</span>
+                        </div>
+                        <div class="slider-range">
+                            <span>1 (Poor)</span>
+                            <span>10 (Excellent)</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Living Area (sq ft) -->
+                    <div class="form-group">
+                        <label class="form-label" for="grLivArea">Living Area (sq ft)</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="grLivArea" data-step="50" aria-label="Decrease living area">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="grLivArea" name="GrLivArea"
+                                   value="1500" min="0" step="50" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="grLivArea" data-step="50" aria-label="Increase living area">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Full Bathrooms -->
+                    <div class="form-group">
+                        <label class="form-label" for="fullBath">Full Bathrooms</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="fullBath" data-step="1" aria-label="Decrease full bathrooms">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="fullBath" name="FullBath"
+                                   value="2" min="0" max="10" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="fullBath" data-step="1" aria-label="Increase full bathrooms">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Year Built -->
+                    <div class="form-group">
+                        <label class="form-label" for="yearBuilt">Year Built</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="yearBuilt" data-step="1" aria-label="Decrease year built">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="yearBuilt" name="YearBuilt"
+                                   value="2000" min="1800" max="2026" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="yearBuilt" data-step="1" aria-label="Increase year built">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5. 1st Floor Area (sq ft) -->
+                    <div class="form-group">
+                        <label class="form-label" for="firstFloorArea">1st Floor Area (sq ft)</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="firstFloorArea" data-step="50" aria-label="Decrease first floor area">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="firstFloorArea" name="FirstFloorArea"
+                                   value="1000" min="0" step="50" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="firstFloorArea" data-step="50" aria-label="Increase first floor area">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 6. Half Bathrooms -->
+                    <div class="form-group">
+                        <label class="form-label" for="halfBath">Half Bathrooms</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="halfBath" data-step="1" aria-label="Decrease half bathrooms">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="halfBath" name="HalfBath"
+                                   value="1" min="0" max="10" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="halfBath" data-step="1" aria-label="Increase half bathrooms">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 7. Year Remodeled -->
+                    <div class="form-group">
+                        <label class="form-label" for="yearRemodAdd">Year Remodeled</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="yearRemodAdd" data-step="1" aria-label="Decrease year remodeled">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="yearRemodAdd" name="YearRemodAdd"
+                                   value="2000" min="1800" max="2026" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="yearRemodAdd" data-step="1" aria-label="Increase year remodeled">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 8. Garage Area (sq ft) -->
+                    <div class="form-group">
+                        <label class="form-label" for="garageArea">Garage Area (sq ft)</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="garageArea" data-step="50" aria-label="Decrease garage area">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="garageArea" name="GarageArea"
+                                   value="400" min="0" step="50" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="garageArea" data-step="50" aria-label="Increase garage area">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 9. Bedrooms Above Ground -->
+                    <div class="form-group">
+                        <label class="form-label" for="bedroomAbvGr">Bedrooms Above Ground</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="bedroomAbvGr" data-step="1" aria-label="Decrease bedrooms">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="bedroomAbvGr" name="BedroomAbvGr"
+                                   value="3" min="0" max="20" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="bedroomAbvGr" data-step="1" aria-label="Increase bedrooms">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 10. Total Basement Area (sq ft) -->
+                    <div class="form-group">
+                        <label class="form-label" for="totalBsmtSF">Total Basement Area (sq ft)</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="totalBsmtSF" data-step="50" aria-label="Decrease basement area">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="totalBsmtSF" name="TotalBsmtSF"
+                                   value="1000" min="0" step="50" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="totalBsmtSF" data-step="50" aria-label="Increase basement area">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 11. Garage Cars -->
+                    <div class="form-group">
+                        <label class="form-label" for="garageCars">Garage Cars</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="garageCars" data-step="1" aria-label="Decrease garage cars">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="garageCars" name="GarageCars"
+                                   value="2" min="0" max="10" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="garageCars" data-step="1" aria-label="Increase garage cars">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 12. Total Rooms Above Ground -->
+                    <div class="form-group">
+                        <label class="form-label" for="totRmsAbvGrd">Total Rooms Above Ground</label>
+                        <div class="input-stepper">
+                            <button type="button" class="stepper-btn stepper-minus" data-target="totRmsAbvGrd" data-step="1" aria-label="Decrease total rooms">
+                                <span class="material-icons-round">remove</span>
+                            </button>
+                            <input type="number" id="totRmsAbvGrd" name="TotRmsAbvGrd"
+                                   value="6" min="0" max="30" step="1" class="form-input">
+                            <button type="button" class="stepper-btn stepper-plus" data-target="totRmsAbvGrd" data-step="1" aria-label="Increase total rooms">
+                                <span class="material-icons-round">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Predict Button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-predict" id="predict-btn">
+                        <span class="material-icons-round">analytics</span>
+                        Predict House Price
+                    </button>
+                </div>
+            </form>
+
+            <!-- Prediction Result Area -->
+            <div class="prediction-result" id="prediction-result">
+                <div class="result-card" id="result-card">
+                    <span class="material-icons-round result-icon">payments</span>
+                    <h3 class="result-title">Estimated Price</h3>
+                    <p class="result-price" id="result-price">$---,---</p>
+                    <p class="result-note">Connect the ML model via FastAPI to see real predictions.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <!-- ============================================
+         PAGE: ABOUT
+         Placeholder page for About info
+         ============================================ -->
+    <section class="page" id="page-about">
+
+    <div class="page-header">
+        
+    </div>
+
+    <div class="about-content">
+
+        <div class="about-intro">
+            <h2>About PricePredict</h2>
+
+            <p>
+                PricePredict is a Machine Learning web application
+                that helps estimate the price of a house based on
+                its property details.
+            </p>
+
+            <p>
+                Enter the required information about the property
+                and the trained Machine Learning model generates
+                an estimated price.
+            </p>
+        </div>
+
+        <div class="about-how">
+            <h2>How It Works</h2>
+
+            <div class="step">
+                <span>01</span>
+                <div>
+                    <h3>Enter Property Details</h3>
+                    <p>Provide the required information about the house.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span>02</span>
+                <div>
+                    <h3>Submit Your Information</h3>
+                    <p>Click the Predict House Price button.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <span>03</span>
+                <div>
+                    <h3>Get Estimated Price</h3>
+                    <p>The ML model processes the data and returns an estimated price.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="about-note">
+            <p>
+                <strong>Note:</strong> The predicted price is an estimate
+                generated by the Machine Learning model and may differ
+                from the actual market price.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- ============================================
+         FOOTER
+         Simple footer with credits
+         ============================================ -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p class="footer-text">&copy; 2026 PricePredict &mdash; House Price Prediction Application</p>
+        </div>
+    </footer>
+
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
