@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function predictHousePrice(data) {
     console.log("Sending data to ML backend:", data);
 
-    const API_URL = "http://127.0.0.1:8000/predict";
+    const API_URL = "https://house-price-predict-project-7.onrender.com/predict";
 
     try {
         const response = await fetch(API_URL, {
