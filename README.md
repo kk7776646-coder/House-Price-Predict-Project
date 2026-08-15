@@ -55,42 +55,6 @@ A Machine Learning-based web application that predicts house prices based on pro
 
 ---
 
-## ▶️ How to Run
-
-### 1. Clone the Repository
-
-`git clone YOUR_REPOSITORY_URL`
-
-`cd "House Price Predict Project"`
-
-### 2. Install Dependencies
-
-`pip install -r requirements.txt`
-
-### 3. Start the Backend
-
-`cd backend`
-
-`uvicorn main:app --reload`
-
-Backend:
-
-`http://127.0.0.1:8000`
-
-### 4. Start the Frontend
-
-Open another terminal:
-
-`cd frontend`
-
-`python -m http.server 5500`
-
-Frontend:
-
-`http://127.0.0.1:5500`
-
----
-
 ## 🤖 AI-Assisted Development
 
 The frontend and backend of this project were developed with the assistance of AI tools.
