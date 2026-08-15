@@ -1,360 +1,495 @@
-/* ============================================
-   HOUSE PRICE PREDICTION - MAIN JAVASCRIPT
-   script.js
-   
-   This file handles:
-   1. Navigation (page switching, mobile menu)
-   2. Stepper controls (minus/plus buttons for numeric inputs)
-   3. Slider value display (Overall Quality)
-   4. Form submission & prediction function
-   5. Navbar scroll effect
-   
-   NOTE: The ML model is NOT connected yet.
-   The predictHousePrice() function is prepared
-   for future FastAPI integration.
-   ============================================ */
+/* =====================================================
+   CONFIGURATION
+===================================================== */
+
+const API_URL =
+    "https://house-price-predict-project-7.onrender.com/predict";
 
 
-// ============================================
-// Wait for the DOM to fully load before running scripts
-// ============================================
-document.addEventListener('DOMContentLoaded', function () {
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-    // ============================================
-    // CACHE DOM ELEMENTS
-    // Store references to frequently used elements
-    // ============================================
-    const navbar = document.getElementById('navbar');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const navLinksContainer = document.getElementById('nav-links');
-    const hamburger = document.getElementById('nav-hamburger');
-    const pages = document.querySelectorAll('.page');
-    const predictionForm = document.getElementById('prediction-form');
-    const predictionResult = document.getElementById('prediction-result');
-    const resultPrice = document.getElementById('result-price');
-    const slider = document.getElementById('overallQual');
-    const sliderValueDisplay = document.getElementById('overallQual-value');
-    const heroCTA = document.getElementById('hero-cta-btn');
+const navLinks = document.querySelectorAll(".nav-link");
+const navLinksContainer = document.getElementById("nav-links");
+const hamburger = document.getElementById("nav-hamburger");
+
+const predictionForm =
+    document.getElementById("prediction-form");
+
+const startPrediction =
+    document.getElementById("start-prediction");
+
+const predictionResult =
+    document.getElementById("prediction-result");
+
+const resultPrice =
+    document.getElementById("result-price");
+
+const resultMessage =
+    document.getElementById("result-message");
+
+const qualitySlider =
+    document.getElementById("OverallQual");
+
+const qualityDisplay =
+    document.getElementById("quality-display");
 
 
-    // ============================================
-    // 1. NAVIGATION - PAGE SWITCHING
-    // Each nav link switches the visible page
-    // ============================================
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
 
-    /**
-     * switchPage - Shows the target page and hides all others.
-     * Also updates the active state on nav links.
-     * 
-     * @param {string} pageName - The data-page value (e.g., "dashboard", "prediction")
-     */
-    function switchPage(pageName) {
-        // Hide all pages
-        pages.forEach(function (page) {
-            page.classList.remove('page-active');
-        });
+function switchPage(pageName) {
 
-        // Show the target page
-        const targetPage = document.getElementById('page-' + pageName);
-        if (targetPage) {
-            targetPage.classList.add('page-active');
-        }
+    /*
+        Hide all pages
+    */
 
-        // Update active state on nav links
-        navLinks.forEach(function (link) {
-            link.classList.remove('active');
-            if (link.getAttribute('data-page') === pageName) {
-                link.classList.add('active');
-            }
-        });
+    document.querySelectorAll(".page-section").forEach(section => {
 
-        // Close mobile menu if open
-        navLinksContainer.classList.remove('open');
-        hamburger.classList.remove('active');
+        section.classList.remove("active-page");
 
-        // Scroll to top of page
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Add click event to each nav link
-    navLinks.forEach(function (link) {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Get the target page name from data-page attribute
-            const pageName = this.getAttribute('data-page');
-
-            // Add click animation (scale-down effect)
-            this.classList.add('clicking');
-            
-            // Remove clicking class after animation completes
-            setTimeout(function () {
-                link.classList.remove('clicking');
-            }, 150);
-
-            // Switch to the selected page
-            switchPage(pageName);
-        });
     });
 
-    // Hero CTA button navigates to Prediction page
-    if (heroCTA) {
-        heroCTA.addEventListener('click', function () {
-            const targetPage = this.getAttribute('data-navigate');
-            if (targetPage) {
-                switchPage(targetPage);
-            }
-        });
+
+    /*
+        Show selected page
+    */
+
+    const selectedPage =
+        document.getElementById(pageName);
+
+    if (selectedPage) {
+
+        selectedPage.classList.add("active-page");
+
     }
 
 
-    // ============================================
-    // 2. MOBILE HAMBURGER MENU
-    // Toggle the mobile navigation drawer
-    // ============================================
-    hamburger.addEventListener('click', function () {
-        this.classList.toggle('active');
-        navLinksContainer.classList.toggle('open');
-    });
+    /*
+        Update active navigation item
+    */
 
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function (e) {
-        if (!navbar.contains(e.target)) {
-            hamburger.classList.remove('active');
-            navLinksContainer.classList.remove('open');
+    navLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.dataset.page === pageName) {
+
+            link.classList.add("active");
+
         }
+
     });
 
 
-    // ============================================
-    // 3. NAVBAR SCROLL EFFECT
-    // Add shadow to navbar when user scrolls down
-    // ============================================
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > 10) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
+    /*
+        Close mobile menu
+    */
+
+    navLinksContainer.classList.remove("open");
+
+    hamburger.classList.remove("active");
+
+
+    /*
+        Scroll to top
+    */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+   NAVIGATION CLICK
+===================================================== */
+
+navLinks.forEach(link => {
+
+    link.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        const page =
+            this.dataset.page;
+
+        switchPage(page);
+
+        history.replaceState(
+            null,
+            "",
+            "#" + page
+        );
+
     });
 
+});
 
-    // ============================================
-    // 4. STEPPER CONTROLS (Minus / Plus buttons)
-    // Handle increment/decrement for numeric inputs
-    // ============================================
 
-    // Select all stepper buttons
-    const stepperButtons = document.querySelectorAll('.stepper-btn');
+/* =====================================================
+   MOBILE HAMBURGER
+===================================================== */
 
-    stepperButtons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            // Get the target input's ID and step size from data attributes
-            const targetId = this.getAttribute('data-target');
-            const stepSize = parseFloat(this.getAttribute('data-step')) || 1;
-            const input = document.getElementById(targetId);
+hamburger.addEventListener("click", function () {
 
-            if (!input) return;
+    navLinksContainer.classList.toggle("open");
 
-            // Get current value and min/max bounds
-            let currentValue = parseFloat(input.value) || 0;
-            const minValue = parseFloat(input.min);
-            const maxValue = parseFloat(input.max);
+    this.classList.toggle("active");
 
-            // Determine direction: minus or plus
-            if (this.classList.contains('stepper-minus')) {
-                currentValue -= stepSize;
-            } else if (this.classList.contains('stepper-plus')) {
-                currentValue += stepSize;
-            }
+});
 
-            // Clamp value within min/max if they exist
-            if (!isNaN(minValue) && currentValue < minValue) {
-                currentValue = minValue;
-            }
-            if (!isNaN(maxValue) && currentValue > maxValue) {
-                currentValue = maxValue;
-            }
 
-            // Update the input value
-            input.value = currentValue;
-        });
+/* =====================================================
+   START PREDICTION BUTTON
+===================================================== */
+
+startPrediction.addEventListener("click", function () {
+
+    switchPage("prediction");
+
+    history.replaceState(
+        null,
+        "",
+        "#prediction"
+    );
+
+});
+
+
+/* =====================================================
+   QUALITY SLIDER
+===================================================== */
+
+qualitySlider.addEventListener("input", function () {
+
+    qualityDisplay.textContent =
+        this.value;
+
+});
+
+
+/* =====================================================
+   PLUS / MINUS CONTROLS
+===================================================== */
+
+document.querySelectorAll(".plus-btn").forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const targetId =
+            this.dataset.target;
+
+        const input =
+            document.getElementById(targetId);
+
+        if (!input) return;
+
+        const currentValue =
+            Number(input.value) || 0;
+
+        const max =
+            input.max
+                ? Number(input.max)
+                : Infinity;
+
+        input.value =
+            Math.min(currentValue + 1, max);
+
     });
 
-
-    // ============================================
-    // 5. SLIDER - OVERALL QUALITY
-    // Update the displayed value and slider track
-    // ============================================
-
-    /**
-     * updateSlider - Updates the slider's visual display
-     * and the percentage-fill of the track.
-     */
-    function updateSlider() {
-        const value = slider.value;
-        const min = slider.min || 1;
-        const max = slider.max || 10;
-
-        // Update the displayed number
-        sliderValueDisplay.textContent = value;
-
-        // Calculate percentage for the filled portion of the track
-        const percentage = ((value - min) / (max - min)) * 100;
-
-        // Update the slider background gradient (filled vs unfilled)
-        slider.style.background =
-            'linear-gradient(to right, #2563eb 0%, #2563eb ' +
-            percentage + '%, #e2e8f0 ' + percentage + '%, #e2e8f0 100%)';
-    }
-
-    // Listen for slider changes
-    slider.addEventListener('input', updateSlider);
-
-    // Initialize slider display on page load
-    updateSlider();
+});
 
 
-    // ============================================
-    // 6. FORM SUBMISSION & PREDICTION
-    // Collects all 12 input values and calls the
-    // prediction function
-    // ============================================
-    predictionForm.addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent default form submission
+document.querySelectorAll(".minus-btn").forEach(button => {
 
-        // Collect all 12 property values from the form
-        const propertyData = {
-            OverallQual: parseInt(document.getElementById('overallQual').value),
-            GrLivArea: parseInt(document.getElementById('grLivArea').value),
-            FullBath: parseInt(document.getElementById('fullBath').value),
-            YearBuilt: parseInt(document.getElementById('yearBuilt').value),
-            FirstFloorArea: parseInt(document.getElementById('firstFloorArea').value),
-            HalfBath: parseInt(document.getElementById('halfBath').value),
-            YearRemodAdd: parseInt(document.getElementById('yearRemodAdd').value),
-            GarageArea: parseInt(document.getElementById('garageArea').value),
-            BedroomAbvGr: parseInt(document.getElementById('bedroomAbvGr').value),
-            TotalBsmtSF: parseInt(document.getElementById('totalBsmtSF').value),
-            GarageCars: parseInt(document.getElementById('garageCars').value),
-            TotRmsAbvGrd: parseInt(document.getElementById('totRmsAbvGrd').value)
-        };
+    button.addEventListener("click", function () {
 
-        // Call the prediction function
-        predictHousePrice(propertyData);
+        const targetId =
+            this.dataset.target;
+
+        const input =
+            document.getElementById(targetId);
+
+        if (!input) return;
+
+        const currentValue =
+            Number(input.value) || 0;
+
+        const min =
+            input.min
+                ? Number(input.min)
+                : 0;
+
+        input.value =
+            Math.max(currentValue - 1, min);
+
     });
 
+});
 
-    // ============================================
-    // 7. PREDICT HOUSE PRICE FUNCTION
-    // 
-    // This function will eventually send the 12 
-    // property values to the FastAPI backend.
-    // For now, it shows a placeholder result.
-    //
-    // API Endpoint: POST /predict
-    // Expected JSON format:
-    // {
-    //     "OverallQual": 5,
-    //     "GrLivArea": 1500,
-    //     "FullBath": 2,
-    //     "YearBuilt": 2000,
-    //     "FirstFloorArea": 1000,
-    //     "HalfBath": 1,
-    //     "YearRemodAdd": 2000,
-    //     "GarageArea": 400,
-    //     "BedroomAbvGr": 3,
-    //     "TotalBsmtSF": 1000,
-    //     "GarageCars": 2,
-    //     "TotRmsAbvGrd": 6
-    // }
-    // ============================================
 
-    /**
-     * predictHousePrice - Sends property data to the ML model
-     * and displays the predicted price.
-     * 
-     * @param {Object} data - Object containing the 12 property feature values
-     */
-    async function predictHousePrice(data) {
-    console.log("Sending data to ML backend:", data);
+/* =====================================================
+   FORM SUBMISSION
+===================================================== */
 
-    const API_URL = "https://house-price-predict-project-7.onrender.com/predict";
+predictionForm.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+
+    const predictButton =
+        document.getElementById("predict-btn");
+
+
+    /*
+        Collect data
+    */
+
+    const data = {
+
+        OverallQual:
+            Number(
+                document.getElementById("OverallQual").value
+            ),
+
+        YearBuilt:
+            Number(
+                document.getElementById("YearBuilt").value
+            ),
+
+        YearRemodAdd:
+            Number(
+                document.getElementById("YearRemodAdd").value
+            ),
+
+        TotalBsmtSF:
+            Number(
+                document.getElementById("TotalBsmtSF").value
+            ),
+
+        GrLivArea:
+            Number(
+                document.getElementById("GrLivArea").value
+            ),
+
+        FirstFloorArea:
+            Number(
+                document.getElementById("FirstFloorArea").value
+            ),
+
+        GarageArea:
+            Number(
+                document.getElementById("GarageArea").value
+            ),
+
+        GarageCars:
+            Number(
+                document.getElementById("GarageCars").value
+            ),
+
+        FullBath:
+            Number(
+                document.getElementById("FullBath").value
+            ),
+
+        HalfBath:
+            Number(
+                document.getElementById("HalfBath").value
+            ),
+
+        BedroomAbvGr:
+            Number(
+                document.getElementById("BedroomAbvGr").value
+            ),
+
+        TotRmsAbvGrd:
+            Number(
+                document.getElementById("TotRmsAbvGrd").value
+            )
+    };
+
+
+    /*
+        Loading state
+    */
+
+    predictButton.disabled = true;
+
+    predictButton.innerHTML = `
+        <span class="material-icons-round">
+            hourglass_top
+        </span>
+
+        Predicting...
+    `;
+
 
     try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
+
+        const response =
+            await fetch(API_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+
+            });
+
 
         if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
+
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+
         }
 
-        const result = await response.json();
 
-        console.log("Prediction received:", result);
+        const result =
+            await response.json();
 
-        if (result.success) {
-            displayPrediction(result.predicted_price);
+
+        /*
+            Display prediction
+        */
+
+        if (
+            result.success &&
+            result.predicted_price !== undefined
+        ) {
+
+            const price =
+                Number(result.predicted_price);
+
+
+            resultPrice.textContent =
+                "$" +
+                price.toLocaleString(
+                    "en-US",
+                    {
+                        maximumFractionDigits: 0
+                    }
+                );
+
+
+            resultMessage.textContent =
+                "Estimated value generated successfully from the property details.";
+
+
+            predictionResult.classList.add("show");
+
+
+            predictionResult.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
         } else {
-            throw new Error("Prediction failed");
+
+            throw new Error(
+                "Invalid prediction response"
+            );
+
         }
 
     } catch (error) {
-        console.error("Prediction error:", error);
 
-        resultPrice.textContent = "Error";
+        console.error(
+            "Prediction error:",
+            error
+        );
 
-        document.querySelector(".result-note").textContent =
-            "Unable to connect to the prediction server.";
 
-        predictionResult.classList.add("visible");
+        resultPrice.textContent =
+            "Unable to predict";
+
+
+        resultMessage.textContent =
+            "Something went wrong while connecting to the prediction server. Please try again.";
+
+
+        predictionResult.classList.add("show");
+
     }
+
+
+    /*
+        Restore button
+    */
+
+    predictButton.disabled = false;
+
+    predictButton.innerHTML = `
+        <span class="material-icons-round">
+            query_stats
+        </span>
+
+        Predict House Price
+
+        <span class="material-icons-round">
+            arrow_forward
+        </span>
+    `;
+
+});
+
+
+/* =====================================================
+   LOAD PAGE FROM URL HASH
+===================================================== */
+
+function loadPageFromHash() {
+
+    const hash =
+        window.location.hash.replace("#", "");
+
+
+    if (
+        hash === "prediction" ||
+        hash === "about" ||
+        hash === "dashboard"
+    ) {
+
+        switchPage(hash);
+
+    } else {
+
+        switchPage("dashboard");
+
+    }
+
 }
 
-    /**
-     * displayPrediction - Updates the result card with the predicted price.
-     * 
-     * @param {number|null} price - The predicted price, or null for placeholder
-     */
-    function displayPrediction(price) {
-        if (price !== null && price !== undefined) {
-            // Format the price as currency (e.g., $182,500)
-            resultPrice.textContent = '$' + price.toLocaleString('en-US');
-        } else {
-            // Placeholder text when API is not connected
-            resultPrice.textContent = '$---,---';
-            document.querySelector('.result-note').textContent =
-                'ML model not connected yet. Connect via FastAPI to see real predictions.';
-        }
 
-        // Show the result card with a smooth animation
-        predictionResult.classList.add('visible');
+window.addEventListener(
+    "load",
+    loadPageFromHash
+);
 
-        // Scroll to the result so the user can see it
-        predictionResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+/* =====================================================
+   CLOSE MOBILE MENU ON OUTSIDE CLICK
+===================================================== */
+
+document.addEventListener("click", function (event) {
+
+    const clickedInsideNavbar =
+        event.target.closest(".nav-container");
+
+    if (!clickedInsideNavbar) {
+
+        navLinksContainer.classList.remove("open");
+
+        hamburger.classList.remove("active");
+
     }
-
-
-    // ============================================
-    // 8. URL HASH ROUTING
-    // Check URL hash on page load to show the correct page
-    // (e.g., if user navigates to index.html#prediction)
-    // ============================================
-    function handleHashRoute() {
-        const hash = window.location.hash.replace('#', '');
-        if (hash) {
-            switchPage(hash);
-        }
-    }
-
-    // Handle initial hash route
-    handleHashRoute();
-
-    // Listen for hash changes (back/forward buttons)
-    window.addEventListener('hashchange', handleHashRoute);
 
 });
