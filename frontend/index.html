@@ -4,436 +4,863 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO Meta Tags -->
-    <title>House Price Prediction | Smart Real Estate Valuation</title>
-    <meta name="description" content="Predict house prices accurately using machine learning. Enter 12 key property details to get an instant valuation estimate.">
-    <meta name="keywords" content="house price prediction, real estate, property valuation, machine learning">
-    
-    <!--Scans Serif font-->
+    <title>PricePredict — House Price Prediction</title>
+
+    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
-    <!-- Material Icons for clean UI icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- Material Icons -->
+    <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+        rel="stylesheet"
+    >
 
-    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Favicon (uses the logo) -->
-    <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
+
 <body>
 
-    <!-- ============================================
-         NAVIGATION BAR
-         Clean top nav with logo, links, and mobile menu
-         ============================================ -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-            <!-- Logo and Brand Name -->
-            <a href="#" class="nav-logo" id="nav-logo">
-                <img src="assets/logo.png" alt="House Price Prediction Logo" class="nav-logo-img">
-                <span class="nav-logo-text">PricePredict</span>
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <a href="#dashboard" class="brand" id="nav-logo">
+            <img
+                src="assets/logo.png"
+                alt="PricePredict"
+                class="brand-logo"
+            >
+
+            <span>PricePredict</span>
+        </a>
+
+        <div class="nav-links" id="nav-links">
+
+            <a
+                href="#dashboard"
+                class="nav-link active"
+                data-page="dashboard"
+            >
+                <span class="material-icons-round">home</span>
+                Dashboard
             </a>
 
-            <!-- Navigation Links -->
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#dashboard" class="nav-link active" data-page="dashboard">
-                    <span class="material-icons-round nav-icon">dashboard</span>
-                    Dashboard
-                </a></li>
-                <li><a href="#prediction" class="nav-link" data-page="prediction">
-                    <span class="material-icons-round nav-icon">analytics</span>
-                    Prediction
-                </a></li>
-                <li><a href="#about" class="nav-link" data-page="about">
-                    <span class="material-icons-round nav-icon">info</span>
-                    About
-                </a></li>
-            </ul>
+            <a
+                href="#prediction"
+                class="nav-link"
+                data-page="prediction"
+            >
+                <span class="material-icons-round">bar_chart</span>
+                Prediction
+            </a>
 
-            <!-- Mobile Hamburger Menu Button -->
-            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-        </div>
-    </nav>
-
-
-    <!-- ============================================
-         PAGE: DASHBOARD (Hero / Landing)
-         Large hero section with the house background image
-         ============================================ -->
-    <section class="page page-active" id="page-dashboard">
-
-        <!-- Hero Section with house background -->
-        <div class="hero">
-            <div class="hero-image-wrapper">
-                <img src="assets/house.png" alt="Luxury modern villas" class="hero-image">
-                <div class="hero-overlay"></div>
-            </div>
-            <div class="hero-content">
-                <h1 class="hero-title">Intelligent House Price Prediction</h1>
-                <p class="hero-subtitle">Harness the power of machine learning to get accurate property valuations. Enter key property details and receive an instant price estimate.</p>
-                <button class="btn btn-primary hero-btn" id="hero-cta-btn" data-navigate="prediction">
-                    <span class="material-icons-round">analytics</span>
-                    Start Prediction
-                </button>
-            </div>
-        </div>
-
-        <!-- Quick Stats Cards (static placeholders showing app capabilities) -->
-        <div class="dashboard-stats">
-            <div class="stat-card">
-                <div class="stat-icon-wrapper stat-icon-blue">
-                    <span class="material-icons-round">home</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value">12</span>
-                    <span class="stat-label">Property Features</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon-wrapper stat-icon-green">
-                    <span class="material-icons-round">precision_manufacturing</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value">ML</span>
-                    <span class="stat-label">Powered Engine</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon-wrapper stat-icon-purple">
-                    <span class="material-icons-round">speed</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value">Fast</span>
-                    <span class="stat-label">Instant Results</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon-wrapper stat-icon-orange">
-                    <span class="material-icons-round">verified</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-value">High</span>
-                    <span class="stat-label">Accuracy</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ============================================
-         PAGE: PREDICTION
-         The main prediction form with 12 input fields
-         ============================================ -->
-    <section class="page" id="page-prediction">
-        <div class="page-container">
-
-            <!-- Section Header -->
-            <div class="section-header">
-                <span class="material-icons-round section-header-icon">home_work</span>
-                <h2 class="section-title">Property Details</h2>
-                <p class="section-subtitle">Fill in the 12 property features below to predict the house price.</p>
-            </div>
-
-            <!-- Prediction Form -->
-            <form class="prediction-form" id="prediction-form" autocomplete="off">
-
-                <!-- ===== ROW 1 ===== -->
-                <div class="form-grid">
-
-                    <!-- 1. Overall Quality (Slider) -->
-                    <div class="form-group form-group-slider">
-                        <label class="form-label" for="overallQual">Overall Quality</label>
-                        <div class="slider-wrapper">
-                            <input type="range" id="overallQual" name="OverallQual"
-                                   min="1" max="10" value="5" step="1" class="form-slider">
-                            <span class="slider-value" id="overallQual-value">5</span>
-                        </div>
-                        <div class="slider-range">
-                            <span>1 (Poor)</span>
-                            <span>10 (Excellent)</span>
-                        </div>
-                    </div>
-
-                    <!-- 2. Living Area (sq ft) -->
-                    <div class="form-group">
-                        <label class="form-label" for="grLivArea">Living Area (sq ft)</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="grLivArea" data-step="50" aria-label="Decrease living area">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="grLivArea" name="GrLivArea"
-                                   value="1500" min="0" step="50" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="grLivArea" data-step="50" aria-label="Increase living area">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 3. Full Bathrooms -->
-                    <div class="form-group">
-                        <label class="form-label" for="fullBath">Full Bathrooms</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="fullBath" data-step="1" aria-label="Decrease full bathrooms">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="fullBath" name="FullBath"
-                                   value="2" min="0" max="10" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="fullBath" data-step="1" aria-label="Increase full bathrooms">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 4. Year Built -->
-                    <div class="form-group">
-                        <label class="form-label" for="yearBuilt">Year Built</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="yearBuilt" data-step="1" aria-label="Decrease year built">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="yearBuilt" name="YearBuilt"
-                                   value="2000" min="1800" max="2026" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="yearBuilt" data-step="1" aria-label="Increase year built">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 5. 1st Floor Area (sq ft) -->
-                    <div class="form-group">
-                        <label class="form-label" for="firstFloorArea">1st Floor Area (sq ft)</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="firstFloorArea" data-step="50" aria-label="Decrease first floor area">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="firstFloorArea" name="FirstFloorArea"
-                                   value="1000" min="0" step="50" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="firstFloorArea" data-step="50" aria-label="Increase first floor area">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 6. Half Bathrooms -->
-                    <div class="form-group">
-                        <label class="form-label" for="halfBath">Half Bathrooms</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="halfBath" data-step="1" aria-label="Decrease half bathrooms">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="halfBath" name="HalfBath"
-                                   value="1" min="0" max="10" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="halfBath" data-step="1" aria-label="Increase half bathrooms">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 7. Year Remodeled -->
-                    <div class="form-group">
-                        <label class="form-label" for="yearRemodAdd">Year Remodeled</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="yearRemodAdd" data-step="1" aria-label="Decrease year remodeled">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="yearRemodAdd" name="YearRemodAdd"
-                                   value="2000" min="1800" max="2026" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="yearRemodAdd" data-step="1" aria-label="Increase year remodeled">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 8. Garage Area (sq ft) -->
-                    <div class="form-group">
-                        <label class="form-label" for="garageArea">Garage Area (sq ft)</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="garageArea" data-step="50" aria-label="Decrease garage area">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="garageArea" name="GarageArea"
-                                   value="400" min="0" step="50" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="garageArea" data-step="50" aria-label="Increase garage area">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 9. Bedrooms Above Ground -->
-                    <div class="form-group">
-                        <label class="form-label" for="bedroomAbvGr">Bedrooms Above Ground</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="bedroomAbvGr" data-step="1" aria-label="Decrease bedrooms">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="bedroomAbvGr" name="BedroomAbvGr"
-                                   value="3" min="0" max="20" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="bedroomAbvGr" data-step="1" aria-label="Increase bedrooms">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 10. Total Basement Area (sq ft) -->
-                    <div class="form-group">
-                        <label class="form-label" for="totalBsmtSF">Total Basement Area (sq ft)</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="totalBsmtSF" data-step="50" aria-label="Decrease basement area">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="totalBsmtSF" name="TotalBsmtSF"
-                                   value="1000" min="0" step="50" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="totalBsmtSF" data-step="50" aria-label="Increase basement area">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 11. Garage Cars -->
-                    <div class="form-group">
-                        <label class="form-label" for="garageCars">Garage Cars</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="garageCars" data-step="1" aria-label="Decrease garage cars">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="garageCars" name="GarageCars"
-                                   value="2" min="0" max="10" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="garageCars" data-step="1" aria-label="Increase garage cars">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 12. Total Rooms Above Ground -->
-                    <div class="form-group">
-                        <label class="form-label" for="totRmsAbvGrd">Total Rooms Above Ground</label>
-                        <div class="input-stepper">
-                            <button type="button" class="stepper-btn stepper-minus" data-target="totRmsAbvGrd" data-step="1" aria-label="Decrease total rooms">
-                                <span class="material-icons-round">remove</span>
-                            </button>
-                            <input type="number" id="totRmsAbvGrd" name="TotRmsAbvGrd"
-                                   value="6" min="0" max="30" step="1" class="form-input">
-                            <button type="button" class="stepper-btn stepper-plus" data-target="totRmsAbvGrd" data-step="1" aria-label="Increase total rooms">
-                                <span class="material-icons-round">add</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Predict Button -->
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-predict" id="predict-btn">
-                        <span class="material-icons-round">analytics</span>
-                        Predict House Price
-                    </button>
-                </div>
-            </form>
-
-            <!-- Prediction Result Area -->
-            <div class="prediction-result" id="prediction-result">
-                <div class="result-card" id="result-card">
-                    <span class="material-icons-round result-icon">payments</span>
-                    <h3 class="result-title">Estimated Price</h3>
-                    <p class="result-price" id="result-price">$---,---</p>
-                    <p class="result-note">Connect the ML model via FastAPI to see real predictions.</p>
-                </div>
-            </div>
+            <a
+                href="#about"
+                class="nav-link"
+                data-page="about"
+            >
+                <span class="material-icons-round">info</span>
+                About
+            </a>
 
         </div>
-    </section>
 
+        <button
+            class="nav-hamburger"
+            id="nav-hamburger"
+            aria-label="Open navigation"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-
-    <!-- ============================================
-         PAGE: ABOUT
-         Placeholder page for About info
-         ============================================ -->
-    <section class="page" id="page-about">
-
-    <div class="page-header">
-        
     </div>
 
-    <div class="about-content">
+</nav>
 
-        <div class="about-intro">
-            <h2>About PricePredict</h2>
+
+<main>
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section id="dashboard" class="page-section active-page">
+
+    <div class="hero">
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <div class="hero-label">
+                <span class="hero-dot"></span>
+                Valuation workspace
+            </div>
+
+            <div class="hero-small-title">
+                A CLEARER VIEW OF VALUE
+            </div>
+
+            <h1>
+                Know what your<br>
+                home is worth.
+            </h1>
 
             <p>
-                PricePredict is a Machine Learning web application
-                that helps estimate the price of a house based on
-                its property details.
+                A considered estimate, built from the details that move a
+                property's value — not a generic questionnaire.
             </p>
 
-            <p>
-                Enter the required information about the property
-                and the trained Machine Learning model generates
-                an estimated price.
-            </p>
+            <button
+                class="primary-btn"
+                id="start-prediction"
+            >
+                Start Prediction
+                <span class="material-icons-round">arrow_forward</span>
+            </button>
+
+            <div class="hero-stats">
+
+                <div>
+                    <strong>12</strong>
+                    <span>property signals</span>
+                </div>
+
+                <div>
+                    <strong>ML</strong>
+                    <span>powered engine</span>
+                </div>
+
+                <div>
+                    <strong>Fast</strong>
+                    <span>instant estimate</span>
+                </div>
+
+                <div>
+                    <strong>High</strong>
+                    <span>accuracy</span>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="about-how">
-            <h2>How It Works</h2>
+    </div>
 
-            <div class="step">
-                <span>01</span>
-                <div>
-                    <h3>Enter Property Details</h3>
-                    <p>Provide the required information about the house.</p>
-                </div>
-            </div>
 
-            <div class="step">
-                <span>02</span>
-                <div>
-                    <h3>Submit Your Information</h3>
-                    <p>Click the Predict House Price button.</p>
-                </div>
-            </div>
+    <!-- Small information cards -->
 
-            <div class="step">
-                <span>03</span>
-                <div>
-                    <h3>Get Estimated Price</h3>
-                    <p>The ML model processes the data and returns an estimated price.</p>
-                </div>
-            </div>
+    <div class="dashboard-grid">
+
+        <div class="info-card">
+
+            <span class="section-number">01 / PROPERTY VALUE</span>
+
+            <h2>
+                A sharper first step in a big decision.
+            </h2>
+
+            <p>
+                PricePredict is a machine learning workspace that turns
+                the details of a property into a useful, understandable
+                estimate.
+            </p>
+
         </div>
 
 
-        <div class="about-note">
-            <p>
-                <strong>Note:</strong> The predicted price is an estimate
-                generated by the Machine Learning model and may differ
-                from the actual market price.
-            </p>
+        <div class="how-card">
+
+            <span class="section-number">HOW IT WORKS</span>
+
+            <div class="how-item">
+
+                <span class="how-number">01</span>
+
+                <div>
+                    <h3>Enter property details</h3>
+                    <p>
+                        Share the essentials: size, age, rooms,
+                        quality and practical features.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="how-item">
+
+                <span class="how-number">02</span>
+
+                <div>
+                    <h3>Submit your information</h3>
+                    <p>
+                        One click sends the complete profile through
+                        the prediction workflow.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="how-item">
+
+                <span class="how-number">03</span>
+
+                <div>
+                    <h3>Get an estimated price</h3>
+                    <p>
+                        Review a clear result and use it to guide
+                        your next conversation.
+                    </p>
+                </div>
+
+            </div>
+
         </div>
 
     </div>
 
 </section>
 
-    <!-- ============================================
-         FOOTER
-         Simple footer with credits
-         ============================================ -->
-    <footer class="footer">
-        <div class="footer-container">
-            <p class="footer-text">&copy; 2026 PricePredict &mdash; House Price Prediction Application</p>
+
+<!-- =====================================================
+     PREDICTION
+===================================================== -->
+
+<section id="prediction" class="page-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-number">
+                01 / PROPERTY PROFILE
+            </span>
+
+            <h1>
+                Tell us about the home.
+            </h1>
+
+            <p>
+                Twelve signals are enough to create a useful starting point.
+                Adjust anything that feels different.
+            </p>
+
         </div>
-    </footer>
+
+        <span class="editable-badge">
+            All fields are editable
+        </span>
+
+    </div>
 
 
-    <!-- Main JavaScript -->
-    <script src="script.js"></script>
+    <div class="prediction-card">
+
+        <!-- Overall Quality -->
+
+        <div class="quality-box">
+
+            <div class="quality-header">
+
+                <div>
+                    <span>Overall quality</span>
+                    <small>
+                        The home's overall material and finish
+                    </small>
+                </div>
+
+                <div class="quality-value">
+                    <strong id="quality-display">5</strong>
+                    <span>/ 10</span>
+                </div>
+
+            </div>
+
+            <input
+                type="range"
+                id="OverallQual"
+                min="1"
+                max="10"
+                value="5"
+            >
+
+            <div class="range-labels">
+                <span>1 · Needs work</span>
+                <span>10 · Exceptional</span>
+            </div>
+
+        </div>
+
+
+        <!-- Form -->
+
+        <form id="prediction-form">
+
+            <div class="form-grid">
+
+
+                <!-- GrLivArea -->
+
+                <div class="input-group">
+
+                    <label for="GrLivArea">
+                        Ground living area
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="GrLivArea"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="GrLivArea"
+                            value="1500"
+                            min="1"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="GrLivArea"
+                        >+</button>
+
+                    </div>
+
+                    <small>sq ft</small>
+
+                </div>
+
+
+                <!-- FullBath -->
+
+                <div class="input-group">
+
+                    <label for="FullBath">
+                        Full bathrooms
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="FullBath"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="FullBath"
+                            value="2"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="FullBath"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- YearBuilt -->
+
+                <div class="input-group">
+
+                    <label for="YearBuilt">
+                        Year built
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="YearBuilt"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="YearBuilt"
+                            value="2000"
+                            min="1800"
+                            max="2026"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="YearBuilt"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- First Floor -->
+
+                <div class="input-group">
+
+                    <label for="FirstFloorArea">
+                        First floor area
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="FirstFloorArea"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="FirstFloorArea"
+                            value="1000"
+                            min="1"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="FirstFloorArea"
+                        >+</button>
+
+                    </div>
+
+                    <small>sq ft</small>
+
+                </div>
+
+
+                <!-- Half Bath -->
+
+                <div class="input-group">
+
+                    <label for="HalfBath">
+                        Half bathrooms
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="HalfBath"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="HalfBath"
+                            value="1"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="HalfBath"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Year Remodel -->
+
+                <div class="input-group">
+
+                    <label for="YearRemodAdd">
+                        Year remodeled
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="YearRemodAdd"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="YearRemodAdd"
+                            value="2000"
+                            min="1800"
+                            max="2026"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="YearRemodAdd"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Garage -->
+
+                <div class="input-group">
+
+                    <label for="GarageArea">
+                        Garage area
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="GarageArea"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="GarageArea"
+                            value="400"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="GarageArea"
+                        >+</button>
+
+                    </div>
+
+                    <small>sq ft</small>
+
+                </div>
+
+
+                <!-- Bedrooms -->
+
+                <div class="input-group">
+
+                    <label for="BedroomAbvGr">
+                        Bedrooms above ground
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="BedroomAbvGr"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="BedroomAbvGr"
+                            value="3"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="BedroomAbvGr"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Basement -->
+
+                <div class="input-group">
+
+                    <label for="TotalBsmtSF">
+                        Total basement area
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="TotalBsmtSF"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="TotalBsmtSF"
+                            value="1000"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="TotalBsmtSF"
+                        >+</button>
+
+                    </div>
+
+                    <small>sq ft</small>
+
+                </div>
+
+
+                <!-- Garage Cars -->
+
+                <div class="input-group">
+
+                    <label for="GarageCars">
+                        Garage cars
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="GarageCars"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="GarageCars"
+                            value="2"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="GarageCars"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Total Rooms -->
+
+                <div class="input-group">
+
+                    <label for="TotRmsAbvGrd">
+                        Total rooms above ground
+                    </label>
+
+                    <div class="number-control">
+
+                        <button
+                            type="button"
+                            class="minus-btn"
+                            data-target="TotRmsAbvGrd"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            id="TotRmsAbvGrd"
+                            value="6"
+                            min="0"
+                        >
+
+                        <button
+                            type="button"
+                            class="plus-btn"
+                            data-target="TotRmsAbvGrd"
+                        >+</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="predict-btn"
+                id="predict-btn"
+            >
+
+                <span class="material-icons-round">
+                    query_stats
+                </span>
+
+                Predict House Price
+
+                <span class="material-icons-round">
+                    arrow_forward
+                </span>
+
+            </button>
+
+        </form>
+
+
+        <!-- Result -->
+
+        <div
+            class="prediction-result"
+            id="prediction-result"
+        >
+
+            <span class="result-label">
+                ESTIMATED PROPERTY VALUE
+            </span>
+
+            <div
+                class="result-price"
+                id="result-price"
+            >
+                —
+            </div>
+
+            <p id="result-message">
+                Submit the property details to generate an estimate.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section id="about" class="page-section">
+
+    <div class="about-grid">
+
+        <div>
+
+            <span class="section-number">
+                02 / THE THINKING
+            </span>
+
+            <h1>
+                A sharper first step
+                in a big decision.
+            </h1>
+
+            <p>
+                PricePredict is a machine learning workspace that turns
+                the details of a property into a useful, understandable
+                estimate — without making you wade through a generic form.
+            </p>
+
+
+            <div class="note-card">
+
+                <strong>
+                    A note on estimates
+                </strong>
+
+                <p>
+                    The predicted price is an estimate generated by a
+                    machine learning model and may differ from the actual
+                    market price. Use it as a confident starting point,
+                    not a final appraisal.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <h2 class="how-title">
+                How it works
+            </h2>
+
+
+            <div class="about-step">
+
+                <span>01</span>
+
+                <div>
+                    <strong>Enter property details</strong>
+
+                    <p>
+                        Share the essentials: size, age, rooms,
+                        quality and practical features.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="about-step">
+
+                <span>02</span>
+
+                <div>
+                    <strong>Submit your information</strong>
+
+                    <p>
+                        One click sends the complete profile through
+                        the prediction workflow.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="about-step">
+
+                <span>03</span>
+
+                <div>
+                    <strong>Get an estimated price</strong>
+
+                    <p>
+                        Review a clear result and use it to guide
+                        your next conversation.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+    © 2026 PricePredict — House Price Prediction Application
+</footer>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
