@@ -1,106 +1,94 @@
 /* =====================================================
-   CONFIGURATION
+   API CONFIGURATION
 ===================================================== */
 
+const API_BASE_URL =
+    "https://house-price-predict-project-7.onrender.com";
+
 const API_URL =
-    "https://house-price-predict-project-7.onrender.com/predict";
+    `${API_BASE_URL}/predict`;
 
 
 /* =====================================================
-   ELEMENTS
+   DOM ELEMENTS
 ===================================================== */
 
-const navLinks = document.querySelectorAll(".nav-link");
-const navLinksContainer = document.getElementById("nav-links");
-const hamburger = document.getElementById("nav-hamburger");
+const navLinks =
+    document.querySelectorAll(".nav-link");
+
+const pageSections =
+    document.querySelectorAll(".page-section");
+
+const navHamburger =
+    document.getElementById("nav-hamburger");
+
+const navLinksContainer =
+    document.getElementById("nav-links");
+
+const startPredictionButton =
+    document.getElementById("start-prediction");
 
 const predictionForm =
     document.getElementById("prediction-form");
 
-const startPrediction =
-    document.getElementById("start-prediction");
-
-const predictionResult =
-    document.getElementById("prediction-result");
-
-const resultPrice =
-    document.getElementById("result-price");
-
-const resultMessage =
-    document.getElementById("result-message");
-
-const qualitySlider =
-    document.getElementById("OverallQual");
-
-const qualityDisplay =
-    document.getElementById("quality-display");
+const predictButton =
+    document.getElementById("predict-btn");
 
 
 /* =====================================================
    PAGE NAVIGATION
 ===================================================== */
 
-function switchPage(pageName) {
+function showPage(pageName) {
 
-    /*
-        Hide all pages
-    */
-
-    document.querySelectorAll(".page-section").forEach(section => {
+    pageSections.forEach(section => {
 
         section.classList.remove("active-page");
 
+        if (section.id === pageName) {
+            section.classList.add("active-page");
+        }
+
     });
-
-
-    /*
-        Show selected page
-    */
-
-    const selectedPage =
-        document.getElementById(pageName);
-
-    if (selectedPage) {
-
-        selectedPage.classList.add("active-page");
-
-    }
-
-
-    /*
-        Update active navigation item
-    */
 
     navLinks.forEach(link => {
 
         link.classList.remove("active");
 
         if (link.dataset.page === pageName) {
-
             link.classList.add("active");
-
         }
 
     });
 
-
-    /*
-        Close mobile menu
-    */
-
-    navLinksContainer.classList.remove("open");
-
-    hamburger.classList.remove("active");
+}
 
 
-    /*
-        Scroll to top
-    */
+/* =====================================================
+   HASH NAVIGATION
+===================================================== */
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+function loadPageFromHash() {
+
+    const hash =
+        window.location.hash.replace("#", "");
+
+    const validPages = [
+        "dashboard",
+        "prediction",
+        "about"
+    ];
+
+    if (validPages.includes(hash)) {
+
+        showPage(hash);
+
+    } else {
+
+        showPage("dashboard");
+
+    }
+
 }
 
 
@@ -110,20 +98,19 @@ function switchPage(pageName) {
 
 navLinks.forEach(link => {
 
-    link.addEventListener("click", function (event) {
-
-        event.preventDefault();
+    link.addEventListener("click", function () {
 
         const page =
             this.dataset.page;
 
-        switchPage(page);
+        showPage(page);
 
-        history.replaceState(
-            null,
-            "",
-            "#" + page
-        );
+        window.location.hash =
+            page;
+
+        if (navLinksContainer) {
+            navLinksContainer.classList.remove("open");
+        }
 
     });
 
@@ -131,365 +118,377 @@ navLinks.forEach(link => {
 
 
 /* =====================================================
-   MOBILE HAMBURGER
+   MOBILE MENU
 ===================================================== */
 
-hamburger.addEventListener("click", function () {
+if (navHamburger) {
 
-    navLinksContainer.classList.toggle("open");
+    navHamburger.addEventListener(
+        "click",
+        function () {
 
-    this.classList.toggle("active");
+            navLinksContainer.classList.toggle("open");
 
-});
+        }
+    );
+
+}
 
 
 /* =====================================================
    START PREDICTION BUTTON
 ===================================================== */
 
-startPrediction.addEventListener("click", function () {
+if (startPredictionButton) {
 
-    switchPage("prediction");
+    startPredictionButton.addEventListener(
+        "click",
+        function () {
 
-    history.replaceState(
-        null,
-        "",
-        "#prediction"
+            showPage("prediction");
+
+            window.location.hash =
+                "prediction";
+
+        }
     );
 
-});
+}
 
 
 /* =====================================================
-   QUALITY SLIDER
+   NUMBER INPUT CONTROLS
 ===================================================== */
 
-qualitySlider.addEventListener("input", function () {
+document.querySelectorAll(
+    ".number-control"
+).forEach(control => {
 
-    qualityDisplay.textContent =
-        this.value;
+    const input =
+        control.querySelector("input");
 
-});
+    const buttons =
+        control.querySelectorAll("button");
 
+    buttons.forEach(button => {
 
-/* =====================================================
-   PLUS / MINUS CONTROLS
-===================================================== */
+        button.addEventListener(
+            "click",
+            function () {
 
-document.querySelectorAll(".plus-btn").forEach(button => {
+                const action =
+                    this.dataset.action;
 
-    button.addEventListener("click", function () {
+                let value =
+                    parseFloat(input.value) || 0;
 
-        const targetId =
-            this.dataset.target;
+                const step =
+                    parseFloat(input.step) || 1;
 
-        const input =
-            document.getElementById(targetId);
+                const min =
+                    input.min !== ""
+                        ? parseFloat(input.min)
+                        : -Infinity;
 
-        if (!input) return;
+                const max =
+                    input.max !== ""
+                        ? parseFloat(input.max)
+                        : Infinity;
 
-        const currentValue =
-            Number(input.value) || 0;
+                if (action === "increase") {
 
-        const max =
-            input.max
-                ? Number(input.max)
-                : Infinity;
+                    value += step;
 
-        input.value =
-            Math.min(currentValue + 1, max);
+                }
+
+                if (action === "decrease") {
+
+                    value -= step;
+
+                }
+
+                value =
+                    Math.max(
+                        min,
+                        Math.min(max, value)
+                    );
+
+                input.value = value;
+
+                input.dispatchEvent(
+                    new Event(
+                        "input",
+                        { bubbles: true }
+                    )
+                );
+
+            }
+        );
 
     });
 
 });
 
 
-document.querySelectorAll(".minus-btn").forEach(button => {
+/* =====================================================
+   OVERALL QUALITY RANGE
+===================================================== */
 
-    button.addEventListener("click", function () {
+const overallQuality =
+    document.getElementById("OverallQual");
 
-        const targetId =
-            this.dataset.target;
+const qualityValue =
+    document.querySelector(".quality-value strong");
 
-        const input =
-            document.getElementById(targetId);
+if (overallQuality && qualityValue) {
 
-        if (!input) return;
+    function updateQualityValue() {
 
-        const currentValue =
-            Number(input.value) || 0;
+        qualityValue.textContent =
+            overallQuality.value;
 
-        const min =
-            input.min
-                ? Number(input.min)
-                : 0;
+    }
 
-        input.value =
-            Math.max(currentValue - 1, min);
+    overallQuality.addEventListener(
+        "input",
+        updateQualityValue
+    );
 
-    });
+    updateQualityValue();
 
-});
+}
 
 
 /* =====================================================
-   FORM SUBMISSION
+   WAKE UP BACKEND
 ===================================================== */
 
-predictionForm.addEventListener("submit", async function (event) {
-
-    event.preventDefault();
-
-
-    const predictButton =
-        document.getElementById("predict-btn");
-
-
-    /*
-        Collect data
-    */
-
-    const data = {
-
-        OverallQual:
-            Number(
-                document.getElementById("OverallQual").value
-            ),
-
-        YearBuilt:
-            Number(
-                document.getElementById("YearBuilt").value
-            ),
-
-        YearRemodAdd:
-            Number(
-                document.getElementById("YearRemodAdd").value
-            ),
-
-        TotalBsmtSF:
-            Number(
-                document.getElementById("TotalBsmtSF").value
-            ),
-
-        GrLivArea:
-            Number(
-                document.getElementById("GrLivArea").value
-            ),
-
-        FirstFloorArea:
-            Number(
-                document.getElementById("FirstFloorArea").value
-            ),
-
-        GarageArea:
-            Number(
-                document.getElementById("GarageArea").value
-            ),
-
-        GarageCars:
-            Number(
-                document.getElementById("GarageCars").value
-            ),
-
-        FullBath:
-            Number(
-                document.getElementById("FullBath").value
-            ),
-
-        HalfBath:
-            Number(
-                document.getElementById("HalfBath").value
-            ),
-
-        BedroomAbvGr:
-            Number(
-                document.getElementById("BedroomAbvGr").value
-            ),
-
-        TotRmsAbvGrd:
-            Number(
-                document.getElementById("TotRmsAbvGrd").value
-            )
-    };
-
-
-    /*
-        Loading state
-    */
-
-    predictButton.disabled = true;
-
-    predictButton.innerHTML = `
-        <span class="material-icons-round">
-            hourglass_top
-        </span>
-
-        Predicting...
-    `;
-
+async function wakeUpBackend() {
 
     try {
 
+        console.log(
+            "Waking up prediction server..."
+        );
+
         const response =
-            await fetch(API_URL, {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify(data)
-
-            });
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `Server returned ${response.status}`
+            await fetch(
+                API_BASE_URL,
+                {
+                    method: "GET",
+                    cache: "no-store"
+                }
             );
 
-        }
+        if (response.ok) {
 
-
-        const result =
-            await response.json();
-
-
-        /*
-            Display prediction
-        */
-
-        if (
-            result.success &&
-            result.predicted_price !== undefined
-        ) {
-
-            const price =
-                Number(result.predicted_price);
-
-
-            resultPrice.textContent =
-                "$" +
-                price.toLocaleString(
-                    "en-US",
-                    {
-                        maximumFractionDigits: 0
-                    }
-                );
-
-
-            resultMessage.textContent =
-                "Estimated value generated successfully from the property details.";
-
-
-            predictionResult.classList.add("show");
-
-
-            predictionResult.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+            console.log(
+                "Prediction server is ready."
+            );
 
         } else {
 
-            throw new Error(
-                "Invalid prediction response"
+            console.log(
+                "Prediction server responded with status:",
+                response.status
             );
 
         }
 
     } catch (error) {
 
-        console.error(
-            "Prediction error:",
+        console.log(
+            "Backend wake-up request failed:",
             error
         );
-
-
-        resultPrice.textContent =
-            "Unable to predict";
-
-
-        resultMessage.textContent =
-            "Something went wrong while connecting to the prediction server. Please try again.";
-
-
-        predictionResult.classList.add("show");
-
-    }
-
-
-    /*
-        Restore button
-    */
-
-    predictButton.disabled = false;
-
-    predictButton.innerHTML = `
-        <span class="material-icons-round">
-            query_stats
-        </span>
-
-        Predict House Price
-
-        <span class="material-icons-round">
-            arrow_forward
-        </span>
-    `;
-
-});
-
-
-/* =====================================================
-   LOAD PAGE FROM URL HASH
-===================================================== */
-
-function loadPageFromHash() {
-
-    const hash =
-        window.location.hash.replace("#", "");
-
-
-    if (
-        hash === "prediction" ||
-        hash === "about" ||
-        hash === "dashboard"
-    ) {
-
-        switchPage(hash);
-
-    } else {
-
-        switchPage("dashboard");
 
     }
 
 }
 
 
+/* =====================================================
+   PREDICTION
+===================================================== */
+
+if (predictionForm) {
+
+    predictionForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            if (predictButton) {
+
+                predictButton.disabled =
+                    true;
+
+                predictButton.innerHTML = `
+                    <span class="material-icons-round">
+                        hourglass_top
+                    </span>
+                    Predicting...
+                `;
+
+            }
+
+            const formData =
+                new FormData(predictionForm);
+
+            const data = {};
+
+            formData.forEach(
+                (value, key) => {
+
+                    data[key] =
+                        parseFloat(value);
+
+                }
+            );
+
+
+            try {
+
+                console.log(
+                    "Sending prediction request..."
+                );
+
+                const response =
+                    await fetch(
+                        API_URL,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(data)
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Server error: ${response.status}`
+                    );
+
+                }
+
+
+                const result =
+                    await response.json();
+
+                console.log(
+                    "Prediction result:",
+                    result
+                );
+
+
+                /* =====================================
+                   DISPLAY RESULT
+                ===================================== */
+
+                const predictionResult =
+                    document.querySelector(
+                        ".prediction-result"
+                    );
+
+                const resultPrice =
+                    document.querySelector(
+                        ".result-price"
+                    );
+
+
+                if (predictionResult) {
+
+                    predictionResult.classList.add(
+                        "show"
+                    );
+
+                }
+
+
+                if (resultPrice) {
+
+                    const price =
+                        result.predicted_price ??
+                        result.prediction ??
+                        result.price;
+
+                    resultPrice.textContent =
+                        `₹${Number(price).toLocaleString("en-IN")}`;
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Prediction failed:",
+                    error
+                );
+
+                alert(
+                    "Unable to get prediction. Please try again."
+                );
+
+
+            } finally {
+
+                if (predictButton) {
+
+                    predictButton.disabled =
+                        false;
+
+                    predictButton.innerHTML = `
+                        <span class="material-icons-round">
+                            auto_awesome
+                        </span>
+                        Predict House Price
+                    `;
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   INITIAL PAGE LOAD
+===================================================== */
+
 window.addEventListener(
     "load",
-    loadPageFromHash
+    function () {
+
+        loadPageFromHash();
+
+        /*
+         * Wake up Render backend in the background.
+         * This helps reduce the delay caused by
+         * Render cold starts.
+         */
+
+        wakeUpBackend();
+
+    }
 );
 
 
 /* =====================================================
-   CLOSE MOBILE MENU ON OUTSIDE CLICK
+   HASH CHANGE
 ===================================================== */
 
-document.addEventListener("click", function (event) {
-
-    const clickedInsideNavbar =
-        event.target.closest(".nav-container");
-
-    if (!clickedInsideNavbar) {
-
-        navLinksContainer.classList.remove("open");
-
-        hamburger.classList.remove("active");
-
-    }
-
-});
+window.addEventListener(
+    "hashchange",
+    loadPageFromHash
+);
