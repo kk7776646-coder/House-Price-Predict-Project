@@ -44,14 +44,13 @@ button {
     max-width: 1150px;
     margin: auto;
 
-    min-height: 64px;
+    min-height: 76px;
 
-    padding: 10px 18px;
+    padding: 10px 24px;
 
     background: rgba(255, 255, 255, 0.92);
 
     border: 1px solid #e7edf3;
-
     border-radius: 22px;
 
     display: flex;
@@ -62,52 +61,63 @@ button {
         0 10px 30px rgba(27, 42, 65, 0.06);
 }
 
-.brand {
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.nav-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-
-    color: #182235;
 
     text-decoration: none;
 
-    font-size: 17px;
-    font-weight: 700;
+    flex-shrink: 0;
 }
 
-.brand-logo {
-    width: 30px;
-    height: 30px;
+.nav-logo-img {
+    width: 105px;
+    height: 58px;
+
+    max-width: none;
+    max-height: none;
+
     object-fit: contain;
+    display: block;
 }
+
+
+/* =====================================================
+   NAVIGATION LINKS
+===================================================== */
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
 .nav-link {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 9px;
 
-    padding: 10px 15px;
+    padding: 12px 18px;
 
-    border-radius: 14px;
+    border-radius: 15px;
 
     color: #7b8798;
 
     text-decoration: none;
 
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 500;
 
     transition: 0.2s ease;
 }
 
 .nav-link .material-icons-round {
-    font-size: 17px;
+    font-size: 19px;
 }
 
 .nav-link:hover {
@@ -121,6 +131,11 @@ button {
     font-weight: 600;
 }
 
+
+/* =====================================================
+   HAMBURGER
+===================================================== */
+
 .nav-hamburger {
     display: none;
 
@@ -133,14 +148,18 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     gap: 5px;
 }
 
 .nav-hamburger span {
     display: block;
+
     width: 23px;
     height: 2px;
+
     border-radius: 5px;
+
     background: #172033;
 }
 
@@ -156,6 +175,7 @@ button {
     max-width: 1150px;
 
     margin: 0 auto;
+
     padding: 20px 28px 70px;
 }
 
@@ -195,11 +215,13 @@ button {
 
 .hero-content {
     position: relative;
+
     z-index: 2;
 
     max-width: 600px;
 
     padding: 60px;
+
     color: white;
 }
 
@@ -238,6 +260,7 @@ button {
     margin-bottom: 20px;
 
     font-size: clamp(42px, 5vw, 68px);
+
     line-height: 1.02;
 
     letter-spacing: -2.5px;
@@ -272,11 +295,13 @@ button {
 
     transition: 0.2s ease;
 
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.22);
 }
 
 .primary-btn {
     display: inline-flex;
+
     align-items: center;
     gap: 8px;
 
@@ -288,6 +313,7 @@ button {
 .primary-btn:hover,
 .predict-btn:hover {
     background: #1d4ed8;
+
     transform: translateY(-1px);
 }
 
@@ -302,7 +328,9 @@ button {
 
 .hero-stats {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 28px;
 
     margin-top: 34px;
@@ -310,7 +338,9 @@ button {
 
 .hero-stats div {
     display: flex;
+
     align-items: center;
+
     gap: 5px;
 
     color: rgba(255, 255, 255, 0.8);
@@ -329,6 +359,7 @@ button {
 
 .dashboard-grid {
     display: grid;
+
     grid-template-columns: 0.85fr 1.15fr;
 
     gap: 18px;
@@ -369,6 +400,7 @@ button {
     margin-bottom: 14px;
 
     font-size: 28px;
+
     line-height: 1.15;
 }
 
@@ -376,18 +408,23 @@ button {
     color: #7a8797;
 
     font-size: 13px;
+
     line-height: 1.7;
 }
 
 .how-card {
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
 }
 
 .how-item {
     display: flex;
+
     align-items: flex-start;
+
     gap: 15px;
 
     padding: 15px 17px;
@@ -425,7 +462,9 @@ button {
 
 .section-header {
     display: flex;
+
     justify-content: space-between;
+
     align-items: flex-end;
 
     margin-bottom: 25px;
@@ -435,6 +474,7 @@ button {
     margin-bottom: 8px;
 
     font-size: 34px;
+
     letter-spacing: -1.2px;
 }
 
@@ -456,6 +496,7 @@ button {
     border-radius: 20px;
 
     font-size: 10px;
+
     font-weight: 600;
 }
 
@@ -489,7 +530,9 @@ button {
 
 .quality-header {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
     margin-bottom: 14px;
@@ -499,6 +542,7 @@ button {
     display: block;
 
     font-size: 11px;
+
     font-weight: 600;
 }
 
@@ -510,22 +554,28 @@ button {
 
 .quality-value {
     display: flex;
+
     align-items: baseline;
+
     gap: 2px;
 }
 
 .quality-value strong {
     color: #2563eb;
+
     font-size: 17px;
 }
 
 .quality-value span {
     color: #9aa7b6;
+
     font-size: 9px;
 }
 
 
-/* Range */
+/* =====================================================
+   RANGE
+===================================================== */
 
 #OverallQual {
     width: 100%;
@@ -537,6 +587,7 @@ button {
 
 .range-labels {
     display: flex;
+
     justify-content: space-between;
 
     margin-top: 5px;
@@ -568,11 +619,13 @@ button {
     color: #68778a;
 
     font-size: 9px;
+
     font-weight: 600;
 }
 
 .number-control {
     display: flex;
+
     align-items: center;
 
     height: 42px;
@@ -588,6 +641,7 @@ button {
 
 .number-control button {
     width: 40px;
+
     height: 100%;
 
     border: 0;
@@ -601,6 +655,7 @@ button {
 
 .number-control button:hover {
     background: #f3f6fa;
+
     color: #2563eb;
 }
 
@@ -610,6 +665,7 @@ button {
     height: 100%;
 
     border: 0;
+
     outline: 0;
 
     text-align: center;
@@ -617,6 +673,7 @@ button {
     color: #536174;
 
     font-size: 11px;
+
     font-weight: 600;
 
     background: transparent;
@@ -650,8 +707,11 @@ button {
     margin-top: 25px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 7px;
 
     font-size: 12px;
@@ -670,6 +730,7 @@ button {
     display: none;
 
     margin-top: 20px;
+
     padding: 25px;
 
     text-align: center;
@@ -689,6 +750,7 @@ button {
     color: #6380a2;
 
     font-size: 9px;
+
     font-weight: 700;
 
     letter-spacing: 1.5px;
@@ -700,11 +762,13 @@ button {
     color: #2563eb;
 
     font-size: 34px;
+
     font-weight: 700;
 }
 
 .prediction-result p {
     color: #7d8b9c;
+
     font-size: 11px;
 }
 
@@ -727,6 +791,7 @@ button {
     margin-bottom: 18px;
 
     font-size: 42px;
+
     line-height: 1.1;
 
     letter-spacing: -1.5px;
@@ -738,6 +803,7 @@ button {
     color: #7c8998;
 
     font-size: 13px;
+
     line-height: 1.7;
 }
 
@@ -773,7 +839,9 @@ button {
 
 .about-step {
     display: flex;
+
     align-items: flex-start;
+
     gap: 15px;
 
     margin-bottom: 10px;
@@ -791,6 +859,7 @@ button {
     color: #8ca0b3;
 
     font-size: 9px;
+
     font-weight: 700;
 }
 
@@ -839,25 +908,32 @@ footer {
     }
 
     .nav-container {
-        min-height: 58px;
+        min-height: 62px;
 
-        padding: 8px 13px;
+        padding: 7px 13px;
 
         border-radius: 20px;
     }
 
-    .brand {
-        font-size: 15px;
+
+    /* Mobile Logo */
+
+    .nav-logo-img {
+        width: 75px;
+        height: 48px;
+
+        object-fit: contain;
     }
 
-    .brand-logo {
-        width: 27px;
-        height: 27px;
-    }
+
+    /* Hamburger */
 
     .nav-hamburger {
         display: flex;
     }
+
+
+    /* Mobile Navigation */
 
     .nav-links {
         display: none;
@@ -865,6 +941,7 @@ footer {
         position: absolute;
 
         top: 68px;
+
         left: 0;
         right: 0;
 
@@ -873,6 +950,7 @@ footer {
         padding: 10px;
 
         flex-direction: column;
+
         align-items: stretch;
 
         background: white;
@@ -911,9 +989,15 @@ footer {
         background: #dceaff;
     }
 
+
+    /* Page */
+
     .page-section {
         padding: 12px 14px 45px;
     }
+
+
+    /* Hero */
 
     .hero {
         min-height: 580px;
@@ -945,6 +1029,9 @@ footer {
         font-size: 9px;
     }
 
+
+    /* Dashboard */
+
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
@@ -952,6 +1039,9 @@ footer {
     .info-card h2 {
         font-size: 25px;
     }
+
+
+    /* Prediction */
 
     .section-header {
         display: block;
@@ -973,8 +1063,12 @@ footer {
 
     .form-grid {
         grid-template-columns: 1fr;
+
         gap: 14px;
     }
+
+
+    /* About */
 
     .about-grid {
         grid-template-columns: 1fr;
@@ -985,77 +1079,4 @@ footer {
     .about-grid h1 {
         font-size: 34px;
     }
-}
-
-
-@media (max-width: 768px) {
-
-    .nav-logo-img {
-        width: 45px !important;
-        height: 45px !important;
-
-        min-width: 45px !important;
-        min-height: 45px !important;
-
-        transform: scale(1.4);
-    }
-
-    .nav-logo-text {
-        font-size: 21px !important;
-    }
-
-}
-
-
-/* FORCE LOGO SIZE */
-.nav-logo-img {
-    width: 55px !important;
-    height: 55px !important;
-
-    max-width: none !important;
-    max-height: none !important;
-
-    min-width: 55px !important;
-    min-height: 55px !important;
-
-    object-fit: contain !important;
-
-    transform: scale(1.5);
-    transform-origin: center;
-
-.nav-logo {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-}
-
-/* Fix navbar size for 100% browser zoom */
-
-.nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-logo-img {
-    width: 52px !important;
-    height: 52px !important;
-    object-fit: contain;
-}
-
-.nav-logo-text {
-    font-size: 25px !important;
-    font-weight: 700;
-}
-
-/* =========================================
-   100% BROWSER ZOOM SIZE FIX
-   ========================================= */
-
-html {
-    font-size: 125%;
-}
-
-body {
-    font-size: 1rem;
 }
