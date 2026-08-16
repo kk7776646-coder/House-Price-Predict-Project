@@ -1,94 +1,109 @@
 /* =====================================================
-   API CONFIGURATION
+   CONFIGURATION
 ===================================================== */
 
 const API_BASE_URL =
     "https://house-price-predict-project-7.onrender.com";
 
 const API_URL =
-    `${API_BASE_URL}/predict`;
+    "https://house-price-predict-project-7.onrender.com/predict";
 
 
 /* =====================================================
-   DOM ELEMENTS
+   ELEMENTS
 ===================================================== */
 
-const navLinks =
-    document.querySelectorAll(".nav-link");
-
-const pageSections =
-    document.querySelectorAll(".page-section");
-
-const navHamburger =
-    document.getElementById("nav-hamburger");
-
-const navLinksContainer =
-    document.getElementById("nav-links");
-
-const startPredictionButton =
-    document.getElementById("start-prediction");
+const navLinks = document.querySelectorAll(".nav-link");
+const navLinksContainer = document.getElementById("nav-links");
+const hamburger = document.getElementById("nav-hamburger");
 
 const predictionForm =
     document.getElementById("prediction-form");
 
-const predictButton =
-    document.getElementById("predict-btn");
+const startPrediction =
+    document.getElementById("start-prediction");
+
+const predictionResult =
+    document.getElementById("prediction-result");
+
+const resultPrice =
+    document.getElementById("result-price");
+
+const resultMessage =
+    document.getElementById("result-message");
+
+const qualitySlider =
+    document.getElementById("OverallQual");
+
+const qualityDisplay =
+    document.getElementById("quality-display");
 
 
 /* =====================================================
    PAGE NAVIGATION
 ===================================================== */
 
-function showPage(pageName) {
+function switchPage(pageName) {
 
-    pageSections.forEach(section => {
+    /*
+        Hide all pages
+    */
+
+    document.querySelectorAll(".page-section").forEach(section => {
 
         section.classList.remove("active-page");
 
-        if (section.id === pageName) {
-            section.classList.add("active-page");
-        }
-
     });
+
+
+    /*
+        Show selected page
+    */
+
+    const selectedPage =
+        document.getElementById(pageName);
+
+    if (selectedPage) {
+
+        selectedPage.classList.add("active-page");
+
+    }
+
+
+    /*
+        Update active navigation item
+    */
 
     navLinks.forEach(link => {
 
         link.classList.remove("active");
 
         if (link.dataset.page === pageName) {
+
             link.classList.add("active");
+
         }
 
     });
 
-}
+
+    /*
+        Close mobile menu
+    */
+
+    navLinksContainer.classList.remove("open");
+
+    hamburger.classList.remove("active");
 
 
-/* =====================================================
-   HASH NAVIGATION
-===================================================== */
+    /*
+        Scroll to top
+    */
 
-function loadPageFromHash() {
-
-    const hash =
-        window.location.hash.replace("#", "");
-
-    const validPages = [
-        "dashboard",
-        "prediction",
-        "about"
-    ];
-
-    if (validPages.includes(hash)) {
-
-        showPage(hash);
-
-    } else {
-
-        showPage("dashboard");
-
-    }
-
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 
@@ -98,19 +113,20 @@ function loadPageFromHash() {
 
 navLinks.forEach(link => {
 
-    link.addEventListener("click", function () {
+    link.addEventListener("click", function (event) {
+
+        event.preventDefault();
 
         const page =
             this.dataset.page;
 
-        showPage(page);
+        switchPage(page);
 
-        window.location.hash =
-            page;
-
-        if (navLinksContainer) {
-            navLinksContainer.classList.remove("open");
-        }
+        history.replaceState(
+            null,
+            "",
+            "#" + page
+        );
 
     });
 
@@ -118,112 +134,101 @@ navLinks.forEach(link => {
 
 
 /* =====================================================
-   MOBILE MENU
+   MOBILE HAMBURGER
 ===================================================== */
 
-if (navHamburger) {
+hamburger.addEventListener("click", function () {
 
-    navHamburger.addEventListener(
-        "click",
-        function () {
+    navLinksContainer.classList.toggle("open");
 
-            navLinksContainer.classList.toggle("open");
+    this.classList.toggle("active");
 
-        }
-    );
-
-}
+});
 
 
 /* =====================================================
    START PREDICTION BUTTON
 ===================================================== */
 
-if (startPredictionButton) {
+startPrediction.addEventListener("click", function () {
 
-    startPredictionButton.addEventListener(
-        "click",
-        function () {
+    switchPage("prediction");
 
-            showPage("prediction");
-
-            window.location.hash =
-                "prediction";
-
-        }
+    history.replaceState(
+        null,
+        "",
+        "#prediction"
     );
 
-}
+});
 
 
 /* =====================================================
-   NUMBER INPUT CONTROLS
+   QUALITY SLIDER
 ===================================================== */
 
-document.querySelectorAll(
-    ".number-control"
-).forEach(control => {
+qualitySlider.addEventListener("input", function () {
 
-    const input =
-        control.querySelector("input");
+    qualityDisplay.textContent =
+        this.value;
 
-    const buttons =
-        control.querySelectorAll("button");
+});
 
-    buttons.forEach(button => {
 
-        button.addEventListener(
-            "click",
-            function () {
+/* =====================================================
+   PLUS / MINUS CONTROLS
+===================================================== */
 
-                const action =
-                    this.dataset.action;
+document.querySelectorAll(".plus-btn").forEach(button => {
 
-                let value =
-                    parseFloat(input.value) || 0;
+    button.addEventListener("click", function () {
 
-                const step =
-                    parseFloat(input.step) || 1;
+        const targetId =
+            this.dataset.target;
 
-                const min =
-                    input.min !== ""
-                        ? parseFloat(input.min)
-                        : -Infinity;
+        const input =
+            document.getElementById(targetId);
 
-                const max =
-                    input.max !== ""
-                        ? parseFloat(input.max)
-                        : Infinity;
+        if (!input) return;
 
-                if (action === "increase") {
+        const currentValue =
+            Number(input.value) || 0;
 
-                    value += step;
+        const max =
+            input.max
+                ? Number(input.max)
+                : Infinity;
 
-                }
+        input.value =
+            Math.min(currentValue + 1, max);
 
-                if (action === "decrease") {
+    });
 
-                    value -= step;
+});
 
-                }
 
-                value =
-                    Math.max(
-                        min,
-                        Math.min(max, value)
-                    );
+document.querySelectorAll(".minus-btn").forEach(button => {
 
-                input.value = value;
+    button.addEventListener("click", function () {
 
-                input.dispatchEvent(
-                    new Event(
-                        "input",
-                        { bubbles: true }
-                    )
-                );
+        const targetId =
+            this.dataset.target;
 
-            }
-        );
+        const input =
+            document.getElementById(targetId);
+
+        if (!input) return;
+
+        const currentValue =
+            Number(input.value) || 0;
+
+        const min =
+            input.min
+                ? Number(input.min)
+                : 0;
+
+        input.value =
+            Math.max(currentValue - 1, min);
 
     });
 
@@ -231,69 +236,24 @@ document.querySelectorAll(
 
 
 /* =====================================================
-   OVERALL QUALITY RANGE
-===================================================== */
-
-const overallQuality =
-    document.getElementById("OverallQual");
-
-const qualityValue =
-    document.querySelector(".quality-value strong");
-
-if (overallQuality && qualityValue) {
-
-    function updateQualityValue() {
-
-        qualityValue.textContent =
-            overallQuality.value;
-
-    }
-
-    overallQuality.addEventListener(
-        "input",
-        updateQualityValue
-    );
-
-    updateQualityValue();
-
-}
-
-
-/* =====================================================
-   WAKE UP BACKEND
+   WAKE UP RENDER BACKEND
 ===================================================== */
 
 async function wakeUpBackend() {
 
     try {
 
+        console.log("Waking up prediction server...");
+
+        await fetch(API_BASE_URL, {
+            method: "GET",
+            mode: "no-cors",
+            cache: "no-store"
+        });
+
         console.log(
-            "Waking up prediction server..."
+            "Backend wake-up request sent."
         );
-
-        const response =
-            await fetch(
-                API_BASE_URL,
-                {
-                    method: "GET",
-                    cache: "no-store"
-                }
-            );
-
-        if (response.ok) {
-
-            console.log(
-                "Prediction server is ready."
-            );
-
-        } else {
-
-            console.log(
-                "Prediction server responded with status:",
-                response.status
-            );
-
-        }
 
     } catch (error) {
 
@@ -308,163 +268,241 @@ async function wakeUpBackend() {
 
 
 /* =====================================================
-   PREDICTION
+   FORM SUBMISSION
 ===================================================== */
 
-if (predictionForm) {
+predictionForm.addEventListener("submit", async function (event) {
 
-    predictionForm.addEventListener(
-        "submit",
-        async function (event) {
+    event.preventDefault();
 
-            event.preventDefault();
 
-            if (predictButton) {
+    const predictButton =
+        document.getElementById("predict-btn");
 
-                predictButton.disabled =
-                    true;
 
-                predictButton.innerHTML = `
-                    <span class="material-icons-round">
-                        hourglass_top
-                    </span>
-                    Predicting...
-                `;
+    /*
+        Collect data
+    */
 
-            }
+    const data = {
 
-            const formData =
-                new FormData(predictionForm);
+        OverallQual:
+            Number(
+                document.getElementById("OverallQual").value
+            ),
 
-            const data = {};
+        YearBuilt:
+            Number(
+                document.getElementById("YearBuilt").value
+            ),
 
-            formData.forEach(
-                (value, key) => {
+        YearRemodAdd:
+            Number(
+                document.getElementById("YearRemodAdd").value
+            ),
 
-                    data[key] =
-                        parseFloat(value);
+        TotalBsmtSF:
+            Number(
+                document.getElementById("TotalBsmtSF").value
+            ),
 
-                }
+        GrLivArea:
+            Number(
+                document.getElementById("GrLivArea").value
+            ),
+
+        FirstFloorArea:
+            Number(
+                document.getElementById("FirstFloorArea").value
+            ),
+
+        GarageArea:
+            Number(
+                document.getElementById("GarageArea").value
+            ),
+
+        GarageCars:
+            Number(
+                document.getElementById("GarageCars").value
+            ),
+
+        FullBath:
+            Number(
+                document.getElementById("FullBath").value
+            ),
+
+        HalfBath:
+            Number(
+                document.getElementById("HalfBath").value
+            ),
+
+        BedroomAbvGr:
+            Number(
+                document.getElementById("BedroomAbvGr").value
+            ),
+
+        TotRmsAbvGrd:
+            Number(
+                document.getElementById("TotRmsAbvGrd").value
+            )
+    };
+
+
+    /*
+        Loading state
+    */
+
+    predictButton.disabled = true;
+
+    predictButton.innerHTML = `
+        <span class="material-icons-round">
+            hourglass_top
+        </span>
+
+        Predicting...
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(API_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+
+            });
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server returned ${response.status}`
             );
 
-
-            try {
-
-                console.log(
-                    "Sending prediction request..."
-                );
-
-                const response =
-                    await fetch(
-                        API_URL,
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify(data)
-                        }
-                    );
+        }
 
 
-                if (!response.ok) {
-
-                    throw new Error(
-                        `Server error: ${response.status}`
-                    );
-
-                }
+        const result =
+            await response.json();
 
 
-                const result =
-                    await response.json();
+        /*
+            Display prediction
+        */
 
-                console.log(
-                    "Prediction result:",
-                    result
+        if (
+            result.success &&
+            result.predicted_price !== undefined
+        ) {
+
+            const price =
+                Number(result.predicted_price);
+
+
+            resultPrice.textContent =
+                "$" +
+                price.toLocaleString(
+                    "en-US",
+                    {
+                        maximumFractionDigits: 0
+                    }
                 );
 
 
-                /* =====================================
-                   DISPLAY RESULT
-                ===================================== */
-
-                const predictionResult =
-                    document.querySelector(
-                        ".prediction-result"
-                    );
-
-                const resultPrice =
-                    document.querySelector(
-                        ".result-price"
-                    );
+            resultMessage.textContent =
+                "Estimated value generated successfully from the property details.";
 
 
-                if (predictionResult) {
-
-                    predictionResult.classList.add(
-                        "show"
-                    );
-
-                }
+            predictionResult.classList.add("show");
 
 
-                if (resultPrice) {
+            predictionResult.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
 
-                    const price =
-                        result.predicted_price ??
-                        result.prediction ??
-                        result.price;
+        } else {
 
-                    resultPrice.textContent =
-                        `₹${Number(price).toLocaleString("en-IN")}`;
-
-                }
-
-
-            } catch (error) {
-
-                console.error(
-                    "Prediction failed:",
-                    error
-                );
-
-                alert(
-                    "Unable to get prediction. Please try again."
-                );
-
-
-            } finally {
-
-                if (predictButton) {
-
-                    predictButton.disabled =
-                        false;
-
-                    predictButton.innerHTML = `
-                        <span class="material-icons-round">
-                            auto_awesome
-                        </span>
-                        Predict House Price
-                    `;
-
-                }
-
-            }
+            throw new Error(
+                "Invalid prediction response"
+            );
 
         }
-    );
 
-}
+    } catch (error) {
+
+        console.error(
+            "Prediction error:",
+            error
+        );
+
+
+        resultPrice.textContent =
+            "Unable to predict";
+
+
+        resultMessage.textContent =
+            "Something went wrong while connecting to the prediction server. Please try again.";
+
+
+        predictionResult.classList.add("show");
+
+    }
+
+
+    /*
+        Restore button
+    */
+
+    predictButton.disabled = false;
+
+    predictButton.innerHTML = `
+        <span class="material-icons-round">
+            query_stats
+        </span>
+
+        Predict House Price
+
+        <span class="material-icons-round">
+            arrow_forward
+        </span>
+    `;
+
+});
 
 
 /* =====================================================
-   INITIAL PAGE LOAD
+   LOAD PAGE FROM URL HASH
 ===================================================== */
+
+function loadPageFromHash() {
+
+    const hash =
+        window.location.hash.replace("#", "");
+
+
+    if (
+        hash === "prediction" ||
+        hash === "about" ||
+        hash === "dashboard"
+    ) {
+
+        switchPage(hash);
+
+    } else {
+
+        switchPage("dashboard");
+
+    }
+
+}
+
 
 window.addEventListener(
     "load",
@@ -472,12 +510,7 @@ window.addEventListener(
 
         loadPageFromHash();
 
-        /*
-         * Wake up Render backend in the background.
-         * This helps reduce the delay caused by
-         * Render cold starts.
-         */
-
+        // Wake Render backend in the background.
         wakeUpBackend();
 
     }
@@ -485,10 +518,20 @@ window.addEventListener(
 
 
 /* =====================================================
-   HASH CHANGE
+   CLOSE MOBILE MENU ON OUTSIDE CLICK
 ===================================================== */
 
-window.addEventListener(
-    "hashchange",
-    loadPageFromHash
-);
+document.addEventListener("click", function (event) {
+
+    const clickedInsideNavbar =
+        event.target.closest(".nav-container");
+
+    if (!clickedInsideNavbar) {
+
+        navLinksContainer.classList.remove("open");
+
+        hamburger.classList.remove("active");
+
+    }
+
+});
